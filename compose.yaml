@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: madr
+      POSTGRES_PASSWORD: madr
+      POSTGRES_DB: madr
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U madr']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - madr-data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg://madr:madr@db:5432/madr
+      SECRET_KEY: ${SECRET_KEY:-troque-esta-chave-em-producao}
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 60
+    ports:
+      - '8000:8000'
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  madr-data:
