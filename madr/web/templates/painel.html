@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block titulo %}Painel{% endblock %}
+{% block corpo %}
+<h1>Painel</h1>
+<p class="sub">Visão rápida do que está catalogado.</p>
+
+<div class="metricas">
+  <div class="cartao metrica">
+    <span class="numero">{{ total_livros }}</span>
+    <span class="rotulo">livros</span>
+  </div>
+  <div class="cartao metrica">
+    <span class="numero">{{ total_romancistas }}</span>
+    <span class="rotulo">romancistas</span>
+  </div>
+</div>
+
+<section class="cartao">
+  <div class="cabecalho-secao">
+    <h2>Últimos cadastros</h2>
+    <a class="botao secundario" href="/livros/novo">Novo livro</a>
+  </div>
+
+  {% if recentes %}
+  <table class="tabela">
+    <thead>
+      <tr><th>Título</th><th>Ano</th><th class="num">Romancista</th></tr>
+    </thead>
+    <tbody>
+      {% for livro in recentes %}
+      <tr>
+        <td>{{ livro.titulo }}</td>
+        <td>{{ livro.ano }}</td>
+        <td class="num">{{ livro.romancista_id }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="vazio">Nenhum livro no acervo ainda.</p>
+  {% endif %}
+</section>
+{% endblock %}

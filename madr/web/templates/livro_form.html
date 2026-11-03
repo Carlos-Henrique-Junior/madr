@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar livro' if livro else 'Novo livro' }}{% endblock %}
+{% block corpo %}
+<section class="cartao estreito">
+  <h1>{{ 'Editar livro' if livro else 'Novo livro' }}</h1>
+  <p class="sub">Título e nome são gravados em caixa baixa, sem pontuação.</p>
+
+  {% if erro %}<div class="aviso ruim">{{ erro }}</div>{% endif %}
+
+  <form method="post"
+        action="{{ '/livros/' ~ livro.id if livro else '/livros' }}"
+        class="formulario">
+    <label>
+      Título
+      <input name="titulo" required value="{{ livro.titulo if livro else '' }}">
+    </label>
+    <label>
+      Ano
+      <input type="number" name="ano" required min="0" max="2100"
+             value="{{ livro.ano if livro else '' }}">
+    </label>
+    <label>
+      Romancista
+      <select name="romancista_id" required>
+        <option value="">selecione…</option>
+        {% for r in romancistas %}
+        <option value="{{ r.id }}"
+          {{ 'selected' if livro and livro.romancista_id == r.id }}>
+          {{ r.nome }}
+        </option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <div class="acoes">
+      <button class="botao" type="submit">Salvar</button>
+      <a class="link" href="/livros">Cancelar</a>
+    </div>
+  </form>
+
+  {% if not romancistas %}
+  <p class="nota">Nenhuma romancista cadastrada. <a href="/romancistas/novo">Cadastre uma primeiro</a>.</p>
+  {% endif %}
+</section>
+{% endblock %}

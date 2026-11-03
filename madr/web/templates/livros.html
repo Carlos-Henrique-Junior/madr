@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block titulo %}Livros{% endblock %}
+{% block corpo %}
+<div class="cabecalho-secao">
+  <div>
+    <h1>Livros</h1>
+    <p class="sub">{{ total }} no acervo</p>
+  </div>
+  <a class="botao" href="/livros/novo">Novo livro</a>
+</div>
+
+<form class="filtros" id="filtros"
+      hx-get="/livros/tabela"
+      hx-target="#tabela"
+      hx-trigger="keyup changed delay:350ms from:input[name='titulo'], change from:input[name='ano']"
+      hx-push-url="false">
+  <input type="search" name="titulo" value="{{ titulo }}" placeholder="Buscar por título">
+  <input type="number" name="ano" value="{{ ano }}" placeholder="Ano" min="0" max="2100">
+  <button class="botao secundario" type="submit">Filtrar</button>
+  <a class="link" href="/livros">Limpar</a>
+</form>
+
+<div id="tabela">
+  {% include "partials/tabela_livros.html" %}
+</div>
+{% endblock %}

@@ -13,7 +13,8 @@ um acervo digital de livros e romancistas, com contas, autenticação JWT e CRUD
 | Banco | PostgreSQL 17 em produção; SQLite async nos testes |
 | Migrações | Alembic |
 | Auth | JWT (`pyjwt`, HS256, 60 min, `sub` = email) + `pwdlib`/argon2 |
-| Testes | pytest + pytest-asyncio + httpx (ASGI transport) — **66 testes, 100% de cobertura** |
+| Testes | pytest + pytest-asyncio + httpx (ASGI transport) — **98 testes**, 100% na API e 89% na web |
+| Front-end | Jinja2 + HTMX servidos pelo próprio FastAPI (sem Node, sem build) |
 | Container | Docker + Docker Compose |
 | CI | GitHub Actions (testes em 3.13/3.14 + migrações contra Postgres) |
 
@@ -42,9 +43,30 @@ uvicorn madr.app:app --reload
 ### Testes
 
 ```bash
-pytest          # 66 testes, cobertura 100%
+pytest          # 98 testes; API com 100% de cobertura, web com 89%
 ruff check .
 ```
+
+## Interface web
+
+A mesma aplicação serve uma interface Jinja2 + HTMX, sem Node e sem etapa de build:
+
+| Rota | Descrição |
+|---|---|
+| `GET /login` / `POST /login` | formulário que grava o JWT em cookie `httpOnly` (`samesite=lax`) |
+| `POST /sair` | apaga o cookie |
+| `GET /painel` | métricas do acervo e últimos cadastros |
+| `GET /livros` | lista com busca por título, filtro por ano e paginação de 20 |
+| `GET /livros/tabela` | fragmento HTMX usado pela busca incremental e pelas exclusões |
+| `GET /livros/novo`, `POST /livros` | cadastro de livro |
+| `GET /livros/{id}/editar`, `POST /livros/{id}` | edição de livro |
+| `GET /romancistas` + `/romancistas/tabela` | lista, busca e exclusão |
+| `GET /romancistas/novo`, `POST /romancistas` | cadastro de romancista |
+| `GET /romancistas/{id}/editar`, `POST /romancistas/{id}` | edição de romancista |
+
+A API JSON continua em `/` e nos routers (`/conta`, `/livro`, `/romancista`, `/token`),
+e o painel vive em `/painel` para não competir com a rota raiz da API. Os testes de
+interface usam o mesmo banco SQLite em memória e o mesmo `client` dos testes da API.
 
 ## Endpoints
 

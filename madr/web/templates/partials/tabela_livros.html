@@ -1,0 +1,44 @@
+{% if livros %}
+<table class="tabela">
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th class="curto">Ano</th>
+      <th class="curto num">Romancista</th>
+      <th class="acoes-col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for livro in livros %}
+    <tr>
+      <td>{{ livro.titulo }}</td>
+      <td class="curto">{{ livro.ano }}</td>
+      <td class="curto num">{{ livro.romancista_id }}</td>
+      <td class="acoes-col">
+        <a class="link" href="/livros/{{ livro.id }}/editar">editar</a>
+        <button class="link perigo"
+                hx-post="/livros/{{ livro.id }}/excluir?titulo={{ titulo|urlencode }}&ano={{ ano|urlencode }}&page={{ page }}"
+                hx-target="#tabela"
+                hx-swap="innerHTML"
+                hx-confirm="Excluir “{{ livro.titulo }}”?">excluir</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if paginas > 1 %}
+<nav class="paginacao">
+  {% if page > 1 %}
+  <a class="link" href="/livros?titulo={{ titulo|urlencode }}&ano={{ ano|urlencode }}&page={{ page - 1 }}">← anterior</a>
+  {% endif %}
+  <span>página {{ page }} de {{ paginas }}</span>
+  {% if page < paginas %}
+  <a class="link" href="/livros?titulo={{ titulo|urlencode }}&ano={{ ano|urlencode }}&page={{ page + 1 }}">próxima →</a>
+  {% endif %}
+</nav>
+{% endif %}
+
+{% else %}
+<p class="vazio">Nenhum livro encontrado{% if titulo or ano %} com esses filtros{% endif %}.</p>
+{% endif %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar romancista' if romancista else 'Nova romancista' }}{% endblock %}
+{% block corpo %}
+<section class="cartao estreito">
+  <h1>{{ 'Editar romancista' if romancista else 'Nova romancista' }}</h1>
+  <p class="sub">O nome é gravado em caixa baixa, sem pontuação.</p>
+
+  {% if erro %}<div class="aviso ruim">{{ erro }}</div>{% endif %}
+
+  <form method="post"
+        action="{{ '/romancistas/' ~ romancista.id if romancista else '/romancistas' }}"
+        class="formulario">
+    <label>
+      Nome
+      <input name="nome" required value="{{ romancista.nome if romancista else '' }}">
+    </label>
+    <div class="acoes">
+      <button class="botao" type="submit">Salvar</button>
+      <a class="link" href="/romancistas">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

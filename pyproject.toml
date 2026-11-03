@@ -43,6 +43,7 @@ select = ["I", "F", "E", "W", "PL", "PT", "FAST"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["PLR2004"]
+"madr/web/*" = ["PLR0913", "PLR0917"]
 
 [tool.ruff.format]
 quote-style = "single"

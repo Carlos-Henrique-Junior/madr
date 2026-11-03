@@ -1,0 +1,42 @@
+{% if romancistas %}
+<table class="tabela">
+  <thead>
+    <tr>
+      <th class="curto num">#</th>
+      <th>Nome</th>
+      <th class="acoes-col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for romancista in romancistas %}
+    <tr>
+      <td class="curto num">{{ romancista.id }}</td>
+      <td>{{ romancista.nome }}</td>
+      <td class="acoes-col">
+        <a class="link" href="/romancistas/{{ romancista.id }}/editar">editar</a>
+        <button class="link perigo"
+                hx-post="/romancistas/{{ romancista.id }}/excluir?nome={{ nome|urlencode }}&page={{ page }}"
+                hx-target="#tabela"
+                hx-swap="innerHTML"
+                hx-confirm="Excluir “{{ romancista.nome }}”? Os livros dela também serão apagados.">excluir</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if paginas > 1 %}
+<nav class="paginacao">
+  {% if page > 1 %}
+  <a class="link" href="/romancistas?nome={{ nome|urlencode }}&page={{ page - 1 }}">← anterior</a>
+  {% endif %}
+  <span>página {{ page }} de {{ paginas }}</span>
+  {% if page < paginas %}
+  <a class="link" href="/romancistas?nome={{ nome|urlencode }}&page={{ page + 1 }}">próxima →</a>
+  {% endif %}
+</nav>
+{% endif %}
+
+{% else %}
+<p class="vazio">Nenhuma romancista encontrada{% if nome %} com esse filtro{% endif %}.</p>
+{% endif %}

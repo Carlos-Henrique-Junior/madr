@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block titulo %}Romancistas{% endblock %}
+{% block corpo %}
+<div class="cabecalho-secao">
+  <div>
+    <h1>Romancistas</h1>
+    <p class="sub">{{ total }} no acervo</p>
+  </div>
+  <a class="botao" href="/romancistas/novo">Nova romancista</a>
+</div>
+
+<form class="filtros" id="filtros"
+      hx-get="/romancistas/tabela"
+      hx-target="#tabela"
+      hx-trigger="keyup changed delay:350ms from:input[name='nome']">
+  <input type="search" name="nome" value="{{ nome }}" placeholder="Buscar por nome">
+  <button class="botao secundario" type="submit">Filtrar</button>
+  <a class="link" href="/romancistas">Limpar</a>
+</form>
+
+<div id="tabela">
+  {% include "partials/tabela_romancistas.html" %}
+</div>
+{% endblock %}

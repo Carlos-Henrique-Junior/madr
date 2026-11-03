@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}MADR{% endblock %} · MADR</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="/static/htmx.min.js" defer></script>
+</head>
+<body>
+  {% if user %}
+  <header class="topo">
+    <a class="marca" href="/painel">MADR<span>acervo digital</span></a>
+    <nav>
+      <a href="/painel" class="{{ 'ativo' if pagina_ativa == 'painel' }}">Painel</a>
+      <a href="/livros" class="{{ 'ativo' if pagina_ativa == 'livros' }}">Livros</a>
+      <a href="/romancistas" class="{{ 'ativo' if pagina_ativa == 'romancistas' }}">Romancistas</a>
+    </nav>
+    <div class="conta">
+      <span class="quem">{{ user.username }}</span>
+      <form method="post" action="/sair">
+        <button class="link" type="submit">Sair</button>
+      </form>
+    </div>
+  </header>
+  {% endif %}
+
+  <main class="conteudo">
+    {% set flash_ok = request.query_params.get('ok') %}
+    {% set flash_erro = request.query_params.get('erro') %}
+    {% if flash_ok %}<div class="aviso ok">{{ flash_ok }}</div>{% endif %}
+    {% if flash_erro %}<div class="aviso ruim">{{ flash_erro }}</div>{% endif %}
+    {% block corpo %}{% endblock %}
+  </main>
+
+  <footer class="rodape">MADR · Meu Acervo Digital de Romances</footer>
+</body>
+</html>
