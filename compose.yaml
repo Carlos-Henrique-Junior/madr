@@ -27,7 +27,7 @@ services:
       ALGORITHM: ${ALGORITHM:-HS256}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
     ports:
-      - '8000:8000'
+      - '${API_PORT:-8000}:8000'
     depends_on:
       db:
         condition: service_healthy

@@ -27,7 +27,8 @@ cp .env.example .env          # defina SECRET_KEY; sem ela o compose recusa subi
 docker compose up --build
 ```
 
-A API sobe em `http://localhost:8000` e aplica `alembic upgrade head` no start.
+A API sobe em `http://localhost:8000` (porta do host configurável por `API_PORT`
+no `.env`) e aplica `alembic upgrade head` no start.
 Documentação interativa em `/docs`.
 
 O container roda como usuário sem privilégios (`appuser`, uid 10001), tem
