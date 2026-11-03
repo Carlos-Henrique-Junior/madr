@@ -53,7 +53,7 @@ uvicorn madr.app:app --reload
 ### Testes
 
 ```bash
-pytest          # 98 testes; API com 100% de cobertura, web com 89%
+pytest          # 98 testes; cobertura branch total de 69% (routers 68–75%, web 54%)
 ruff check .
 ```
 

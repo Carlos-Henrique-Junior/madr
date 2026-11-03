@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Verificação do container MADR: sobe com Postgres, exercita API + web e testa persistência.
 set -uo pipefail
-cd /home/lemosserver/madr
+cd "$(dirname "$0")/.."
 
 BASE=http://127.0.0.1:8000
 STAMP=$(date +%s)
