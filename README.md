@@ -23,12 +23,21 @@ um acervo digital de livros e romancistas, com contas, autenticação JWT e CRUD
 ### Com Docker (recomendado)
 
 ```bash
-cp .env.example .env          # ajuste SECRET_KEY
+cp .env.example .env          # defina SECRET_KEY; sem ela o compose recusa subir
 docker compose up --build
 ```
 
 A API sobe em `http://localhost:8000` e aplica `alembic upgrade head` no start.
 Documentação interativa em `/docs`.
+
+O container roda como usuário sem privilégios (`appuser`, uid 10001), tem
+healthcheck em `/health`, reinicia sozinho (`unless-stopped`) e o Postgres só
+publica a porta em `127.0.0.1:5432` — o banco não fica exposto na rede.
+Verificação ponta a ponta (build, health, escrita real e persistência):
+
+```bash
+scripts/docker_check.sh
+```
 
 ### Local
 
